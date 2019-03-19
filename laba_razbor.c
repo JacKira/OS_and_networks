@@ -61,13 +61,13 @@ void read_str(char args[N][M], int *status, int *number) {
             args[i][j++] = c;
             flag = 1;
         }
+    }  
+    *status = 0; //ЕСЛИ КОНЕЦ ФАЙЛА, ТО ИЗМЕНЯЕМ ЗНАЧЕНИЕ СТАТУСА БЕСКОНЕЧНОГО ЦИКЛА
+    *number = i;
+	if ((i == 0)&(j == 0)){
+    	*number = -1;
     }
-    if (c == EOF){
-        *status=0; //ЕСЛИ КОНЕЦ ФАЙЛА, ТО ИЗМЕНЯЕМ ЗНАЧЕНИЕ СТАТУСА БЕСКОНЕЧНОГО ЦИКЛА
-        if ((i == 0)&(j == 0)){
-            *number = -1;
-        }
-    }
+    
 }
 
 
@@ -77,7 +77,7 @@ int main() {
     while (status) {
         printf(">> ");
         char args[N][M] = {0}; //ОБЪЯВЛЯЕМ МАССИВ, ЗАПОЛНЕННЫЙ НУЛЯМИ
-        int  number=0;
+        int  number = 0;
         read_str(args,&status,&number); // ПРОЦЕДУРА СЧИТЫВАНИЯ СТРОКИ
         if (number == -1) {
             continue; //ЕСЛИ ПОЛУЧЕНО СПЕЦИАЛЬНОЕ ЗНАЧЕНИЕ, ПРОПУСКАЕМ ИТЕРАЦИЮ
