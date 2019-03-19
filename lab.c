@@ -76,7 +76,7 @@ int main() {
     while (status) {
         printf(">> ");
         char args[N][M] = {0};
-        int  number;
+        int  number=0;
         read_str(args,&status,&number);
         if (number == -1) {
             continue;
