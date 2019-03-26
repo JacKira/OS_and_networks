@@ -63,7 +63,7 @@ int pars_args(char args[ROW][SYMB]) {
             return -1;
         }
         if (c == '\n') { 
-            return i+1;
+            return i + 1;
         }
         if ((c == ' ') & (flag_in_word == 1)) {
             
