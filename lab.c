@@ -71,6 +71,9 @@ int pars_args(char args[ROW][SYMB]) {
         }
         if (c == '\n') { 
             args[i][j] = '\0';
+            if (j == 0) {
+               i -= 1;
+            }
             return i+1;
         }
         if ((c == ' ') & (flag_in_word == 1)) {
