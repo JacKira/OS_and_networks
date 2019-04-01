@@ -1,0 +1,89 @@
+/*
+   Shell interpreter
+   by Kirill Feyzullin AM 2-1
+   25.03.2019
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+#define ROW 16
+#define SYMB 80
+void execution(char *argv[]);
+void binding(char args[ROW][SYMB], char *argv[], int number);
+int pars_args(char args[ROW][SYMB]);
+
+
+int main() {
+    char args[ROW][SYMB];
+    int  number;
+    char *argv[ROW];
+    while ((number = pars_args(args)) != 0) {
+        if (number == -1) {
+            continue;
+        }  
+        binding(args, argv, number);
+        execution(argv);
+    }
+    return 0;
+}
+
+//Binding lines with pointers
+void binding(char args[ROW][SYMB], char *argv[], int number) {
+    for (int i = 0; i < number; i++) {
+            argv[i] = args[i]; 
+        }
+         argv[number] = NULL;  
+}
+
+//Execute our programs by argv
+void execution(char *argv[]) {
+    pid_t child_pid = fork(); 
+    if (!child_pid) { 
+        if (execvp(argv[0], argv) == -1) {
+            perror("execvp"); 
+        }
+        exit(0);
+    } 
+    pid_t pid = wait(NULL); 
+    if (pid == -1) { 
+        perror("wait");
+        exit(0);
+    }
+}
+
+//Read and parsing arguments
+int pars_args(char args[ROW][SYMB]) {
+    int c;
+    int i = 0, j = 0, flag_in_word = 0;   
+    printf(">> ");
+    while ((c = getchar()) != EOF) {
+        if ((i > (ROW - 1)) || (j > (SYMB - 2))) {
+            printf("Incorrect input. Please, try again\n");
+            while((c = getchar()) != '\n');  //Clearing input buffer
+            return -1;
+        }    
+        if ((c == '\n') & (i == 0) & (flag_in_word == 0)) {
+            return -1;
+        }
+        if (c == '\n') { 
+            args[i][j] = '\0';
+            return i+1;
+        }
+        if ((c == ' ') & (flag_in_word == 1)) {
+            args[i++][j] = '\0';
+            flag_in_word = 0;
+            j = 0;
+            continue;
+        }
+        if (c != ' ') { 
+            args[i][j++] = c;
+            flag_in_word = 1;
+        }
+    }
+    return 0;  
+}
+
