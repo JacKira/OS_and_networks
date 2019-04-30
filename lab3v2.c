@@ -213,9 +213,8 @@ void open_in_file(char *p)
     if (-1 == dup2(fd0, STDIN_FILENO))
     {
         perror("dup2");
-        exit(0);
+        exit(1);
     }
-    perror("open_in");
 }
 
 void open_out_file(char *p)
@@ -229,7 +228,6 @@ void open_out_file(char *p)
     if (-1 == dup2(fd1, STDOUT_FILENO))
     {
         perror("dup2");
-        exit(0);
+        exit(1);
     }
-    perror("open_out");
 }
