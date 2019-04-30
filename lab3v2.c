@@ -72,7 +72,7 @@ int binding(char args[ROW][SYMB], char *argv[ROW + 1][ROW + 1], int number, char
     return j;
 }
 
-//Execute our programs by argv
+//Program call with input and output stream redirection
 void execution(char *argv[ROW + 1][ROW + 1], char *p_stream[], int pipes_count)
 {
     int k = pipes_count + 1;
@@ -178,6 +178,7 @@ int parc_args(char args[ROW][SYMB])
     return -1;
 }
 
+//Opening pipe to enter
 void pipe_0(int arr_fd[])
 {
     close(arr_fd[1]);
@@ -188,6 +189,7 @@ void pipe_0(int arr_fd[])
     }
 }
 
+//Opening the pipe to the output
 void pipe_1(int arr_fd[])
 {
     close(arr_fd[0]);
@@ -198,6 +200,7 @@ void pipe_1(int arr_fd[])
     }
 }
 
+//Redirecting the input stream from a file
 void open_in_file(char *p)
 {
     int fd0 = open(p, O_RDONLY, 0666);
@@ -213,6 +216,7 @@ void open_in_file(char *p)
     }
 }
 
+//Redirecting output stream to file
 void open_out_file(char *p)
 {
     int fd1 = open(p, O_WRONLY | O_CREAT | O_TRUNC, 0666);
