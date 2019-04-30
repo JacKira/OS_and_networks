@@ -76,7 +76,7 @@ void execution(char *argv[], char *p_stream[])
             if (-1 == dup2(fd1, STDOUT_FILENO))
             {
                 perror("dup2");
-                exit(0);
+                exit(1);
             }
         }
         if (p_stream[0])
@@ -90,7 +90,7 @@ void execution(char *argv[], char *p_stream[])
             if (-1 == dup2(fd0, STDIN_FILENO))
             {
                 perror("dup2");
-                exit(0);
+                exit(1);
             }
         }
         if (execvp(argv[0], argv) == -1)
