@@ -17,7 +17,7 @@ void execution(char *argv[FILES][ROW + 1], char *p_stream[], int flag_pipe);
 int binding(char args[ROW][SYMB], char *argv[FILES][ROW + 1], int number, char *p_stream[]);
 int parc_args(char args[ROW][SYMB]);
 void pipe_0(int arr_fd[]);
-void pipe_1(int arr_fd[], int flag_pipe);
+void pipe_1(int arr_fd[]);
 
 int main()
 {
@@ -65,7 +65,6 @@ int binding(char args[ROW][SYMB], char *argv[2][ROW + 1], int number, char *p_st
         argv[j][k++] = args[i];
     }
     argv[j][k] = NULL;
-    
     return j;
 }
 
@@ -81,7 +80,9 @@ void execution(char *argv[2][ROW + 1], char *p_stream[], int flag_pipe)
     pid_t child_pid1 = fork();
     if (!child_pid1)
     {
-        pipe_1(arr_fd, flag_pipe);
+        if (flag_pipe) {
+           pipe_1(arr_fd, flag_pipe);
+        }
         if (p_stream[0])
         {
             int fd0 = open(p_stream[0], O_RDONLY, 0666);
@@ -110,7 +111,6 @@ void execution(char *argv[2][ROW + 1], char *p_stream[], int flag_pipe)
                 exit(0);
             }
         }
-         perror("*");
         if (execvp(argv[0][0], argv[0]) == -1)
         {
             perror("execvp");
@@ -138,7 +138,6 @@ void execution(char *argv[2][ROW + 1], char *p_stream[], int flag_pipe)
                     exit(0);
                 }
             }
-             perror("*");
             if (execvp(argv[1][0], argv[1]) == -1)
             {
                 perror("execvp");
@@ -153,8 +152,6 @@ void execution(char *argv[2][ROW + 1], char *p_stream[], int flag_pipe)
             perror("wait");
             exit(1);
         }
-        close(arr_fd[0]);
-        close(arr_fd[1]);
     }
     pid_t pid = wait(NULL);
     if (pid == -1)
@@ -162,6 +159,8 @@ void execution(char *argv[2][ROW + 1], char *p_stream[], int flag_pipe)
         perror("wait");
         exit(1);
     }
+   close(arr_fd[0]);
+   close(arr_fd[1]);
 }
 
 //Read and parcing arguments
@@ -231,13 +230,10 @@ void pipe_0(int arr_fd[])
 
 void pipe_1(int arr_fd[], int flag_pipe)
 {
-    if (flag_pipe)
+    close(arr_fd[0]);
+    if (-1 == dup2(arr_fd[1], STDOUT_FILENO))
     {
-        close(arr_fd[0]);
-        if (-1 == dup2(arr_fd[1], STDOUT_FILENO))
-        {
-            perror("dup2");
-            exit(1);
-        }
+        perror("dup2");
+        exit(1);
     }
 }
