@@ -94,7 +94,7 @@ void execution(char *argv[2][ROW + 1], char *p_stream[], int flag_pipe)
             if (-1 == dup2(fd0, STDIN_FILENO))
             {
                 perror("dup2");
-                exit(0);
+                exit(1);
             }
         }
         if (p_stream[1] && !flag_pipe)
@@ -108,7 +108,7 @@ void execution(char *argv[2][ROW + 1], char *p_stream[], int flag_pipe)
             if (-1 == dup2(fd1, STDOUT_FILENO))
             {
                 perror("dup2");
-                exit(0);
+                exit(1);
             }
         }
         if (execvp(argv[0][0], argv[0]) == -1)
@@ -135,7 +135,7 @@ void execution(char *argv[2][ROW + 1], char *p_stream[], int flag_pipe)
                 if (-1 == dup2(fd1, STDOUT_FILENO))
                 {
                     perror("dup2");
-                    exit(0);
+                    exit(1);
                 }
             }
             if (execvp(argv[1][0], argv[1]) == -1)
