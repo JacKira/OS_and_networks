@@ -145,7 +145,8 @@ void execution(char *argv[2][ROW + 1], char *p_stream[], int flag_pipe)
             }
             exit(0);
         }
-       
+        close(arr_fd[0]);
+        close(arr_fd[1]);
         pid_t pid2 = wait(NULL);
         if (pid2 == -1)
         {
@@ -159,8 +160,11 @@ void execution(char *argv[2][ROW + 1], char *p_stream[], int flag_pipe)
         perror("wait");
         exit(1);
     }
-   close(arr_fd[0]);
-   close(arr_fd[1]);
+    if (!flag_pipe)
+    {
+       close(arr_fd[0]);
+       close(arr_fd[1]);
+    }
 }
 
 //Read and parcing arguments
