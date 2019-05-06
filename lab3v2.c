@@ -115,7 +115,10 @@ void execution(char *argv[ROW + 1][ROW + 1], char *p_stream[], int pipes_count)
         }
         close(arr_fd[j][0]);
         close(arr_fd[j][1]);
-        pid_t pid = wait(NULL);
+    }
+    for(int i = 0; i < k; i++)
+    {
+       pid_t pid = wait(NULL);
         if (pid == -1)
         {
             perror("wait");
