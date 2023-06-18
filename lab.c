@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+
 #include <string.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -40,6 +41,7 @@ int main() {
         puts(file[1]);
 */        binding(args, argv, number);
         execution(argv, flow_code, file);
+
     }
     return 0;
 }
@@ -48,6 +50,7 @@ int main() {
 void binding(char args[ROW][SYMB], char *argv[], int number) {
     for (int i = 0; i < number; i++) {
             argv[i] = args[i]; 
+
     }
     argv[number] = NULL;  
         
@@ -65,6 +68,7 @@ void execution(char *argv[], int flow_code, char file[FILES][SYMB]) {
            perror("execvp");
             exit(0); 
         }    
+
         exit(0);
     } 
     pid_t pid = wait(NULL); 
@@ -74,12 +78,14 @@ void execution(char *argv[], int flow_code, char file[FILES][SYMB]) {
     }
 }
 
+
 //Read and parcing arguments
 int parc_args(char args[ROW][SYMB], int *flow_code, char file[FILES][SYMB]) {
     int c;
     int i = 0, j = 0, flag_in_word = 0;   
     printf(">> ");
     while ((c = getchar()) != EOF) {
+
         if ((c == '<') || (c == '>')) {
             args[i++][j] = '\0';
             j = 0;
@@ -92,6 +98,7 @@ int parc_args(char args[ROW][SYMB], int *flow_code, char file[FILES][SYMB]) {
             }
             continue;
         }      
+
         if ((i > (ROW - 1)) || (j > (SYMB - 2))) {
             printf("Incorrect input. Please, try again\n");
             while((c = getchar()) != '\n');  //Clearing input buffer
@@ -102,8 +109,10 @@ int parc_args(char args[ROW][SYMB], int *flow_code, char file[FILES][SYMB]) {
         }
         if (c == '\n') { 
             args[i][j] = '\0';
+
             if ( j == 0) {
                 i -= 1;
+
             }
             return i+1;
         }
@@ -120,6 +129,7 @@ int parc_args(char args[ROW][SYMB], int *flow_code, char file[FILES][SYMB]) {
     }
     return 0;  
 }
+
 
 int flow_read( char file[FILES][SYMB], int c) {
     int   j = 0, flag_in_word = 0, k = 0;  
@@ -202,3 +212,4 @@ void flow_change(char file[FILES][SYMB], int flow_code) {
 		}
     }
 }
+
